@@ -1,49 +1,45 @@
-package com.example.addon;
+package com.example.addon.modules;
 
-import com.example.addon.commands.CommandExample;
-import com.example.addon.hud.HudExample;
-import com.example.addon.modules.ModuleExample;
-import com.mojang.logging.LogUtils;
-import meteordevelopment.meteorclient.addons.GithubRepo;
-import meteordevelopment.meteorclient.addons.MeteorAddon;
-import meteordevelopment.meteorclient.commands.Commands;
-import meteordevelopment.meteorclient.systems.hud.Hud;
-import meteordevelopment.meteorclient.systems.hud.HudGroup;
-import meteordevelopment.meteorclient.systems.modules.Category;
-import meteordevelopment.meteorclient.systems.modules.Modules;
-import org.slf4j.Logger;
+import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.settings.BoolSetting;
+import meteordevelopment.meteorclient.settings.IntSetting;
+import meteordevelopment.meteorclient.settings.Setting;
+import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.events.packets.PacketEvent;
+import meteordevelopment.orbit.EventHandler;
 
-public class AddonTemplate extends MeteorAddon {
-    public static final Logger LOG = LogUtils.getLogger();
-    public static final Category CATEGORY = new Category("Example");
-    public static final HudGroup HUD_GROUP = new HudGroup("Example");
+public class GamblingRig extends Module {
+    private final SettingGroup sgGeneral = settings.getDefaultGroup();
 
-    @Override
-    public void onInitialize() {
-        LOG.info("Initializing Meteor Addon Template");
+    private final Setting<Boolean> enabled = sgGeneral.add(new BoolSetting.Builder()
+        .name(\"rig-gambling\")
+        .description(\"Forces gambling results to win.\")
+        .defaultValue(true)
+        .build()
+    );
 
-        // Modules
-        Modules.get().add(new ModuleExample());
+    private final Setting<Integer> winAmount = sgGeneral.add(new IntSetting.Builder()
+        .name(\"win-amount\")
+        .description(\"Amount to force.\")
+        .defaultValue(1000)
+        .min(1)
+        .sliderMax(1000000)
+        .build()
+    );
 
-        // Commands
-        Commands.add(new CommandExample());
-
-        // HUD
-        Hud.get().register(HudExample.INFO);
+    public GamblingRig() {
+        super(com.example.addon.Addon.CATEGORY, \"gambling-rig\", \"Forces wins.\");
     }
 
-    @Override
-    public void onRegisterCategories() {
-        Modules.registerCategory(CATEGORY);
-    }
+    @EventHandler
+    private void onReceivePacket(PacketEvent.Receive event) {
+        if (!enabled.get()) return;
 
-    @Override
-    public String getPackage() {
-        return "com.example.addon";
-    }
 
-    @Override
-    public GithubRepo getRepo() {
-        return new GithubRepo("MeteorDevelopment", "meteor-addon-template");
+        if (event.packet instanceof Object) { 
+
+
+
+        }
     }
 }
