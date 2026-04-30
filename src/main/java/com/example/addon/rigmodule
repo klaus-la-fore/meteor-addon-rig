@@ -1,0 +1,45 @@
+package com.example.addon.modules;
+
+import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.settings.BoolSetting;
+import meteordevelopment.meteorclient.settings.IntSetting;
+import meteordevelopment.meteorclient.settings.Setting;
+import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.events.packets.PacketEvent;
+import meteordevelopment.orbit.EventHandler;
+
+public class GamblingRig extends Module {
+    private final SettingGroup sgGeneral = settings.getDefaultGroup();
+
+    private final Setting<Boolean> enabled = sgGeneral.add(new BoolSetting.Builder()
+        .name(\"rig-gambling\")
+        .description(\"Forces gambling results to win.\")
+        .defaultValue(true)
+        .build()
+    );
+
+    private final Setting<Integer> winAmount = sgGeneral.add(new IntSetting.Builder()
+        .name(\"win-amount\")
+        .description(\"Amount to force.\")
+        .defaultValue(1000)
+        .min(1)
+        .sliderMax(1000000)
+        .build()
+    );
+
+    public GamblingRig() {
+        super(com.example.addon.Addon.CATEGORY, \"gambling-rig\", \"Forces wins.\");
+    }
+
+    @EventHandler
+    private void onReceivePacket(PacketEvent.Receive event) {
+        if (!enabled.get()) return;
+
+
+        if (event.packet instanceof Object) { 
+
+
+
+        }
+    }
+}
